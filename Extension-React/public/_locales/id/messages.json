@@ -1,0 +1,68 @@
+{
+  "language_name": {
+    "message": "Bahasa Indonesia"
+  },
+  "apply": {
+    "message": "Terapkan"
+  },
+  "ignore": {
+    "message": "Abaikan"
+  },
+  "syrup_logo": {
+    "message": "Logo Syrup"
+  },
+  "show_extension": {
+    "message": "Tampilkan Ekstensi"
+  },
+  "no_auto_apply_setup": {
+    "message": "Tidak ada pengaturan penerapan otomatis."
+  },
+  "click_apply_to_try_them_all": {
+    "message": "Klik Terapkan untuk mencoba semuanya."
+  },
+  "syrup_found_coupons": {
+    "message": "Syrup menemukan kupon!"
+  },
+  "got_it": {
+    "message": "Mengerti"
+  },
+  "testing_coupons": {
+    "message": "Mencoba kupon..."
+  },
+  "testing_coupon_current_of_total": {
+    "message": "Mencoba kupon %currentIndex% dari %total%"
+  },
+  "cancel": {
+    "message": "Batal"
+  },
+  "use_best": {
+    "message": "Gunakan yang Terbaik"
+  },
+  "testing_cancelled": {
+    "message": "Percobaan Dibatalkan."
+  },
+  "scan_was_stopped_no_coupons_applied": {
+    "message": "Pemindaian dihentikan. Tidak ada kupon yang diterapkan."
+  },
+  "we_found_the_best_coupon": {
+    "message": "Kami menemukan kupon terbaik!"
+  },
+  "applied_coupon_and_saved_savings_new_total": {
+    "message": "Diterapkan kupon \"%bestCoupon%\" dan disimpan %savings%. Total baru: %finalPrice%"
+  },
+  "no_better_price_found": {
+    "message": "Tidak ada harga lebih baik yang ditemukan."
+  },
+  "all_coupons_tested_but_none_lowered_your_total": {
+    "message": "Semua kupon dicoba, namun tidak ada yang menurunkan total Anda."
+  },
+  "now_trying_best_so_far": {
+    "message": "Sekarang mencoba \"%currentCoupon%\". Harga terbaik sejauh ini: %bestPriceSoFar%"
+  },
+  "best_price_so_far": {
+    "message": "Harga terbaik sejauh ini: $%bestPriceSoFar%"
+  },
+  "Theme": {
+    "message": "Tema"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "languageName": "Bahasa Indonesia",
+  "Coupons": "Kupon",
+  "Theme": "Tema",
+  "Light": "Terang",
+  "Dark": "Gelap",
+  "System": "Sistem",
+  "No_coupons_found": "Tidak ada kupon yang ditemukan",
+  "Domain_invalid": "Domain tidak valid",
+  "Settings": "Pengaturan",
+  "Language": "Bahasa",
+  "Browser_domain": "Domain ini tidak didukung oleh ekstensi.",
+  "no_coupons_found": "Tidak ada kupon yang tersedia.",
+  "keep_looking": "Saya akan mengabari Anda jika saya menemukannya!",
+  "custom_database": "Basis data Custom",
+  "leave_empty_default": "Biarkan kosong untuk default",
+  "Updated": "Diperbarui",
+  "url_invalide": "URL tidak valid"
+}

@@ -98,10 +98,11 @@ You can also contribute by helping to translate Syrup! This is done through our 
 ### Exchangeable Backend System
 
 The backend system is designed to be fully exchangeable! You can:
-- 🏠 Host existing backends yourself
-- 🛠️ Write your own implementation
-- 🔌 Use different providers
-- ⚙️ Configure everything in the extension settings
+
+-   🏠 Host existing backends yourself
+-   🛠️ Write your own implementation
+-   🔌 Use different providers
+-   ⚙️ Configure everything in the extension settings
 
 ### API Standard
 
@@ -112,9 +113,10 @@ The backend follows the Syrup API Standard (SAS). Check out our [backend documen
 The current backend is maintained by [@ImGajeed76](https://github.com/ImGajeed76). Check out the implementation here: [discountdb-api](https://github.com/ImGajeed76/discountdb-api)
 
 Got questions? Feel free to:
-- 💬 Contact @ImGajeed76 on Discord
-- 📝 Open an issue in the [discountdb-api](https://github.com/ImGajeed76/discountdb-api) repo
-- 🤝 Contribute to the project (and maybe leave a star 😉)
+
+-   💬 Contact @ImGajeed76 on Discord
+-   📝 Open an issue in the [discountdb-api](https://github.com/ImGajeed76/discountdb-api) repo
+-   🤝 Contribute to the project (and maybe leave a star 😉)
 
 ---
 
@@ -145,7 +147,7 @@ Special thanks to the amazing people who made Syrup possible:
 
 ## 📄 License
 
-Syrup is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute this project.
+Syrup is licensed under the [GPL-3.0 License](LICENSE).
 
 ---
 
