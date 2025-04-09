@@ -5,7 +5,6 @@ export interface Coupon {
     description: string;
     code: string;
     score: number;
-    copied?: boolean;
 }
 
 export interface CouponList {

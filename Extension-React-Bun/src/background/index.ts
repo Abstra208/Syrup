@@ -26,7 +26,7 @@ type MessageRequest =
     | OpenPopupRequest
     | CheckDevRequest;
 
-export const syrupApiClient = new SyrupApiClientV1("https://api.discountdb.ch/api/v1/syrup");
+const syrupApiClient = new SyrupApiClientV1("https://api.discountdb.ch/api/v1/syrup");
 
 // Message handler
 chrome.runtime.onMessage.addListener((
