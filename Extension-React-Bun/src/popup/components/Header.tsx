@@ -13,6 +13,8 @@ import {
     MenubarSubTrigger,
     MenubarTrigger,
 } from "@/components/ui/menubar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -20,9 +22,18 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
 } from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";  
+import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/popup/components/ThemeProvider";
-import { setSetting, getSetting } from "@/lib/settings";
+import { setSettings, getSettingsObject } from "@/lib/settings";
 import { getLanguage, languageNames, languages, switchLanguage } from "@/lib/i18n";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner"
@@ -32,9 +43,12 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
-import { useState, useEffect } from "react";
-import { Link } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Save, Globe, Ellipsis, Github, Mail } from "lucide-react";
+import { get } from "http";
 
 export default function Header({ pageIcon, pageDomain, couponsFound }: { pageIcon: string, pageDomain: string, couponsFound: number }) {
     const { theme } = useTheme();
@@ -52,24 +66,6 @@ export default function Header({ pageIcon, pageDomain, couponsFound }: { pageIco
     }, [])
     const [openAbout, setOpenAbout] = useState(false);
     const [openSettings, setOpenSettings] = useState(false);
-    const [dummyData, setDummyData] = useState<boolean | undefined>(undefined);
-    const [showIcon, setShowIcon] = useState<boolean | undefined>(undefined);
-    useEffect(() => {
-        getSetting("dummyData").then((data) => {
-            setDummyData(data === "true");
-        });
-        getSetting("showIcon").then((data) => {
-            setShowIcon(data === "true");
-        });
-    }, []);
-    function updatedummyData(checked: boolean) {
-        setSetting("dummyData", checked.toString());
-        setDummyData(checked);
-    }
-    function updateshowIcon(checked: boolean) {
-        setSetting("showIcon", checked.toString());
-        setShowIcon(checked);
-    }
 
     function share(button: string) {
         if (button === "link") {
@@ -114,6 +110,63 @@ export default function Header({ pageIcon, pageDomain, couponsFound }: { pageIco
             };
         }
     }
+
+    const [settings, setSettings] = useState({
+        autoCopy: false,
+        showIcon: true,
+        developer: false,
+        dummyData: false,
+    });
+
+    useEffect(() => {
+        const settings = getSettingsObject();
+        settings.then((data) => {
+            setSettings({
+                autoCopy: data.autoCopy === "true",
+                showIcon: data.showIcon === "true",
+                developer: data.developer === "true",
+                dummyData: data.dummyData === "true",
+            });
+        });
+    }, []);
+    
+    const handleSaveSettings = async () => {
+        await setSettings({
+            autoCopy: settings.autoCopy,
+            showIcon: settings.showIcon,
+            developer: settings.developer,
+            dummyData: settings.dummyData,
+        });
+        toast("Settings saved", {
+            duration: 2000,
+            action: {
+                label: "Undo",
+                onClick: () => {
+                    setSettings({
+                        ...settings,
+                        autoCopy: !settings.autoCopy,
+                        showIcon: !settings.showIcon,
+                        developer: !settings.developer,
+                        dummyData: !settings.dummyData,
+                    });
+                },
+            },
+        });
+        setOpenSettings(false);
+    };
+
+    useEffect(() => {
+        const handleReload = () => {
+            window.location.reload();
+        };
+
+        window.addEventListener("reloadCoupons", handleReload);
+
+        return () => {
+            window.removeEventListener("reloadCoupons", handleReload);
+        };
+    }, []);
+
     return (
         <>
             <Menubar>
@@ -175,7 +228,7 @@ export default function Header({ pageIcon, pageDomain, couponsFound }: { pageIco
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
-            { showIcon ? (
+            { settings.showIcon ? (
                 <Menubar>
                     <MenubarMenu>
                         <MenubarTrigger>
@@ -192,108 +245,178 @@ export default function Header({ pageIcon, pageDomain, couponsFound }: { pageIco
                 </Menubar>
             ) : <></> }
             <Dialog open={openAbout} onOpenChange={setOpenAbout}>
-                <DialogContent className="w-80 flex flex-col items-center rounded-lg">
-                    <DialogHeader className="flex flex-row items-center gap-2">
-                        <DialogTitle>{t('about')}</DialogTitle>
+                <DialogContent className="w-80 rounded-lg">
+                    <DialogHeader>
+                        <DialogTitle className="text-center">About Syrup</DialogTitle>
+                        <DialogDescription className="text-center">The open-source browser extension that helps you save money</DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">Syrup</h3>
-                            <p className="text-muted-foreground">{t('version')} 1.6.0</p>
+                    <div className="flex justify-center my-4">
+                        <div className="bg-primary/10 p-4 rounded-full">
+                            <Avatar>
+                                <AvatarImage src="/icons/full.png" alt="Syrup Logo" />
+                                <AvatarFallback>SY</AvatarFallback>
+                            </Avatar>
                         </div>
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">{t('principal_dev')}</h3>
-                            <p className="text-muted-foreground flex flex-row">
-                                <HoverCard>
-                                    <HoverCardTrigger><a className="pr-2 hover:cursor-pointer">Hexium</a></HoverCardTrigger>
-                                    <HoverCardContent>
-                                        <div className="flex flex-row items-center gap-2">
-                                            <Avatar>
-                                                <AvatarImage src="https://github.com/Abdallah-Alwarawreh.png" alt="Hexium" />
-                                                <AvatarFallback>Hexium</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <h1>Hexium</h1>
-                                                <p>Product Engineer @ open.cx</p>
-                                                <div className="flex flex-row items-center gap-2 h-4 pt-1">
-                                                    <Link size="12"/>
-                                                    <a href="https://github.com/Abdallah-Alwarawreh" target="_blank">Github</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </HoverCardContent>
-                                </HoverCard>
-                                <HoverCard>
-                                    <HoverCardTrigger><a className="pr-2 hover:cursor-pointer">Abstra208</a></HoverCardTrigger>
-                                    <HoverCardContent>
-                                        <div className="flex flex-row items-center gap-2">
-                                            <Avatar>
-                                                <AvatarImage src="https://github.com/Abstra208.png" alt="Abstra208" />
-                                                <AvatarFallback>Abstra208</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <h1>Abstra208</h1>
-                                                <p>Canadian student specializing in user interface and user experience for web development.</p>
-                                                <div className="flex flex-row items-center gap-2 h-4 pt-1">
-                                                    <Link size="12"/>
-                                                    <a href="https://github.com/Abstra208" target="_blank">Github</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </HoverCardContent>
-                                </HoverCard>
-                                <HoverCard>
-                                    <HoverCardTrigger><a className="pr-2 hover:cursor-pointer">ImGajeed76</a></HoverCardTrigger>
-                                    <HoverCardContent>
-                                        <div className="flex flex-row items-center gap-2">
-                                            <Avatar>
-                                                <AvatarImage src="https://github.com/ImGajeed76.png" alt="ImGajeed76" />
-                                                <AvatarFallback>ImGajeed76</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <h1>ImGajeed76</h1>
-                                                <p>Software engineer with experience in embedded systems, web apps, and game development.</p>
-                                                <div className="flex flex-row items-center gap-2 h-4 pt-1">
-                                                    <Link size="12"/>
-                                                    <a href="https://github.com/ImGajeed76" target="_blank">Github</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </HoverCardContent>
-                                </HoverCard>
-                            </p>
+                    </div>
+                    <div className="space-y-4">
+                        <div>
+                            <h4 className="font-medium">Version</h4>
+                            <p className="text-sm text-muted-foreground">1.6.0</p>
                         </div>
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">{t('contact')}</h3>
-                            <p className="text-muted-foreground">Discord: https://discord.gg/jxMDSTmS3E</p>
-                            <p className="text-muted-foreground">{t('website')}: https://joinsyrup.com</p>
+                        <div>
+                            <h4 className="font-medium mb-2">Developers</h4>
+                            <div className="flex space-x-2">
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://github.com/abstra208" target="_blank" rel="noopener noreferrer">
+                                        <Avatar className="h-4 w-4">
+                                            <AvatarImage src="https://github.com/abstra208.png" alt="Abstra208's icon" />
+                                            <AvatarFallback>A8</AvatarFallback>
+                                        </Avatar>
+                                        <span className="sr-only">Abstra208</span>
+                                    </a>
+                                </Button>
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://https://github.com/Abdallah-Alwarawreh" target="_blank" rel="noopener noreferrer">
+                                        <Avatar className="h-4 w-4">
+                                            <AvatarImage src="https://github.com/Abdallah-Alwarawreh.png" alt="Abdallah-Alwarawreh's icon" />
+                                            <AvatarFallback>AA</AvatarFallback>
+                                        </Avatar>
+                                        <span className="sr-only">Abdallah-Alwarawreh</span>
+                                    </a>
+                                </Button>
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://github.com/imgajeed76" target="_blank" rel="noopener noreferrer">
+                                        <Avatar className="h-4 w-4">
+                                            <AvatarImage src="https://github.com/imgajeed76.png" alt="Syrup Logo" />
+                                            <AvatarFallback>I6</AvatarFallback>
+                                        </Avatar>
+                                        <span className="sr-only">imgajeed76</span>
+                                    </a>
+                                </Button>
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://github.com/Abdallah-Alwarawreh/Syrup/graphs/contributors" target="_blank" rel="noopener noreferrer">
+                                        <Ellipsis />
+                                        <span className="sr-only">contributors</span>
+                                    </a>
+                                </Button>
+                            </div>
                         </div>
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">{t('license')}</h3>
-                            <p className="text-muted-foreground">GPL-3.0 {t('license')}</p>
+                        <Separator />
+                        <div>
+                            <h4 className="font-medium mb-2">Connect with us</h4>
+                            <div className="flex space-x-2">
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://joinsyrup.com" target="_blank" rel="noopener noreferrer">
+                                        <Globe className="h-4 w-4" />
+                                        <span className="sr-only">Website</span>
+                                    </a>
+                                </Button>
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://github.com/Abdallah-Alwarawreh/syrup" target="_blank" rel="noopener noreferrer">
+                                        <Github className="h-4 w-4" />
+                                        <span className="sr-only">GitHub</span>
+                                    </a>
+                                </Button>
+                                <Button variant="outline" size="icon" asChild>
+                                    <a href="https://discord.gg/jxMDSTmS3E" target="_blank" className="hover:underline">
+                                        <Mail className="h-4 w-4" />
+                                        <span className="sr-only">Email</span>
+                                    </a>
+                                </Button>
+                            </div>
                         </div>
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">{t('copyright')}</h3>
-                            <p className="text-muted-foreground">© 2024-25 Syrup group Inc. {t('all_rights_reserved')}.</p>
+                        <div>
+                            <div className="flex space-x-4 text-xs text-muted-foreground">
+                                <a href="https://joinsyrup.com/PrivacyPolicy" target="_blank" className="hover:underline">
+                                    Privacy Policy
+                                </a>
+                                <a href="https://discord.gg/jxMDSTmS3E" target="_blank" className="hover:underline">
+                                    Help
+                                </a>
+                            </div>
                         </div>
+                        <p className="text-xs text-center text-muted-foreground pt-2">
+                            © {new Date().getFullYear()} Syrup. All rights reserved.
+                        </p>
                     </div>
                 </DialogContent>
             </Dialog>
             <Dialog open={openSettings} onOpenChange={setOpenSettings}>
-                <DialogContent className="w-80 flex flex-col items-center rounded-lg">
-                    <DialogHeader className="flex flex-row items-center gap-2">
-                        <DialogTitle>{t('settings')}</DialogTitle>
+                <DialogContent className="w-80 rounded-lg">
+                    <DialogHeader>
+                        <DialogTitle>Settings</DialogTitle>
+                        <DialogDescription>Customize your Syrup preferences.</DialogDescription>
                     </DialogHeader>
-                    <div>
-                        <Switch id="show-icon" defaultChecked={showIcon} onCheckedChange={updateshowIcon} />
-                        <label htmlFor="show-icon">{t('show_website_icon')}</label>
-                        <p>{t('show_website_icon_desc')}</p>
-                    </div>
-                    <div>
-                        <Switch defaultChecked={dummyData} onCheckedChange={updatedummyData} id="dummy-data"/>
-                        <label htmlFor="dummy-data">{t('dummy_data')}</label>
-                        <p>{t('dummy_data_desc')} {t('dev')}</p>
-                    </div>
+                    <Tabs defaultValue="general" className="mt-4">
+                        {settings.developer && (
+                            <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger value="general">General</TabsTrigger>
+                                <TabsTrigger value="display">Display</TabsTrigger>
+                                <TabsTrigger value="developer">Developer</TabsTrigger>
+                            </TabsList>
+                        ) || (
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="general">General</TabsTrigger>
+                                <TabsTrigger value="display">Display</TabsTrigger>
+                            </TabsList>
+                        )}
+                        <TabsContent value="general" className="space-y-4 mt-4">
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="auto-copy">Auto Copy</Label>
+                                    <p className="text-xs text-muted-foreground">Automatically copy the first coupon code to clipboard.</p>
+                                </div>
+                                <Switch
+                                    id="auto-copy"
+                                    checked={settings.autoCopy}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, autoCopy: checked })}
+                                />
+                            </div>                            
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="developer-mode">Developer Mode</Label>
+                                    <p className="text-xs text-muted-foreground">Enable advanced features and debugging tools for developers.</p>
+                                </div>
+                                <Switch
+                                    id="developer-mode"
+                                    checked={settings.developer}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, developer: checked })}
+                                />
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="display" className="space-y-4 mt-4">
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="show-icon">Show Icon</Label>
+                                    <p className="text-xs text-muted-foreground">Display the website icon in the popup</p>
+                                </div>
+                                <Switch
+                                    id="auto-copy"
+                                    checked={settings.showIcon}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, showIcon: checked })}
+                                />
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="developer" className="space-y-4 mt-4">
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="dummy-data">Dummy Data</Label>
+                                    <p className="text-xs text-muted-foreground">Display dummy data when the domain is invalid.</p>
+                                </div>
+                                <Switch
+                                    id="dummy-data"
+                                    checked={settings.dummyData}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, dummyData: checked })}
+                                />
+                            </div>
+                        </TabsContent>
+                    </Tabs>
+                    <DialogFooter>
+                        <Button onClick={handleSaveSettings} className="mt-4">
+                            <Save className="h-4 w-4 mr-2" />
+                            Save changes
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </>

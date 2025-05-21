@@ -89,7 +89,7 @@ const Coupons: React.FC<CouponData> = ({
                             <TabsTrigger value="domain">{domainName}</TabsTrigger>
                         )}
                     </TabsList>
-                    <TabsContent value="domain" className="w-80 overflow-y-scroll pb-4 mb-4">
+                    <TabsContent value="domain" className="w-80 overflow-y-scroll mb-4">
                         <div className="space-y-4">
                             {couponsDomain?.map((coupon, index) => (
                                 <Card key={coupon.id} className="shadow-sm">
@@ -126,7 +126,7 @@ const Coupons: React.FC<CouponData> = ({
                             ))}
                         </div>
                     </TabsContent>
-                    <TabsContent value="domain" className="w-80 overflow-y-scroll pb-4 mb-4">
+                    <TabsContent value="subdomain" className="w-80 overflow-y-scroll mb-4">
                         <div className="space-y-4">
                             {couponsSubDomain?.map((coupon, index) => (
                                 <Card key={coupon.id} className="shadow-sm">
@@ -142,12 +142,12 @@ const Coupons: React.FC<CouponData> = ({
                                         {copiedId === index ? (
                                         <>
                                             <Check className="h-3.5 w-3.5 mr-1" />
-                                            Copied
+                                            {t("copied")}
                                         </>
                                         ) : (
                                         <>
                                             <Copy className="h-3.5 w-3.5 mr-1" />
-                                            Copy
+                                            {t("copy")}
                                         </>
                                         )}
                                     </Button>

@@ -4,7 +4,7 @@ import { parseDomain } from "parse-domain";
 import Coupons from "@/popup/components/coupons";
 import Header from "@/popup/components/Header";
 import type { Coupon } from "@/lib/sas/models.ts";
-import { setSetting, getSetting } from "@/lib/settings";
+import { getSetting } from "@/lib/settings";
 
 interface ParseResult {
     domain: string;
@@ -33,13 +33,6 @@ const Popup: React.FC = () => {
     const [couponsDomain, setCouponsDomain] = useState<Coupon[]>([]);
     const [couponsSubDomain, setCouponsSubDomain] = useState<Coupon[]>([]);
     const [errorMsg, setErrorMsg] = useState<string>("");
-    const [dummyData, setDummyData] = useState<string | null>(null);
-
-    useEffect(() => {
-        getSetting("dummyData").then((data) => {
-            setDummyData(data);
-        });
-    }, [dummyData]);
 
     const handleDomainParsing = useCallback((fullDomain: string, favIconUrl: string | null = null) => {
         fullDomain = fullDomain.replace("www.", "");
