@@ -1,5 +1,3 @@
-import { Car } from "lucide-react";
-
 export const getSettings = async () => {
     return localStorage;
 }
