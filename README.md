@@ -1,3 +1,11 @@
+# Project Syrup: Archived by Original Creator
+
+The original "Syrup" project has been officially archived by its creator.
+
+As the most active maintainer of the original "Syrup" project, I am continuing its development and maintenance on this repository. While this is a fork and not an official continuation, I have extensive knowledge of the codebase and will be addressing critical issues and implementing improvements.
+
+> **⚠️ Please note:** My academic studies are my top priority, and updates to this project may be slow. I appreciate your understanding and patience. ⚠️
+
 # Syrup: The Open-Source Honey Alternative
 
 [![Build Extension](https://github.com/Abdallah-Alwarawreh/Syrup/actions/workflows/build-extension.yml/badge.svg)](https://github.com/Abdallah-Alwarawreh/Syrup/actions/workflows/build-extension.yml) [![Discord](https://img.shields.io/discord/1322120002576453745?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://dsc.gg/hexium)
