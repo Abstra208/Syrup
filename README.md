@@ -4,7 +4,9 @@ The original "Syrup" project has been officially archived by its creator.
 
 As the most active maintainer of the original "Syrup" project, I am continuing its development and maintenance on this repository. While this is a fork and not an official continuation, I have extensive knowledge of the codebase and will be addressing critical issues and implementing improvements.
 
-> **⚠️ Please note:** My academic studies are my top priority, and updates to this project may be slow. I appreciate your understanding and patience. ⚠️
+> **⚠️ IMPORTANT WARNING:** The original domain, `joinsyrup.com`, is no longer under our control and is being squatted by an unknown party. Please exercise extreme caution and do not visit or interact with that domain, as it may contain malicious content. I am not responsible for any content or actions related to `joinsyrup.com`.
+>
+> **Please also note:** My academic studies are my top priority, and updates to this project may be slow. I appreciate your understanding and patience. ⚠️
 
 # Syrup: The Open-Source Honey Alternative
 
